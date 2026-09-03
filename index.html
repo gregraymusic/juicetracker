@@ -12,26 +12,31 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 10px;
+      padding: 10px 15px;
       background-color: #121212;
       color: #e0e0e0;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      min-height: 100vh;
+      justify-content: space-between;
+      height: 100vh; /* Enforce exact viewport height to avoid scrolling on 1080p */
+      overflow: hidden;
     }
 
     .main-container {
       width: 100%;
-      max-width: 950px;
+      max-width: 1200px;
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
     }
 
     h1 {
       text-align: center;
       color: #ffffff;
-      margin: 5px 0 10px 0;
-      font-size: 1.8rem;
+      margin: 0 0 5px 0;
+      font-size: 1.5rem;
     }
 
     /* Group Toggle Buttons Styling */
@@ -39,17 +44,17 @@
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 8px;
     }
 
     .band-btn {
       background-color: #2c2c2c;
       color: #888;
       border: 2px solid #444;
-      padding: 10px 20px;
-      font-size: 1.1rem;
+      padding: 6px 16px;
+      font-size: 0.95rem;
       font-weight: bold;
-      border-radius: 20px;
+      border-radius: 16px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -71,14 +76,14 @@
     /* Section Headers & Warm-Up Container */
     .section-title {
       color: #bb86fc;
-      font-size: 1.2rem;
+      font-size: 1rem;
       font-weight: bold;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       text-align: center;
     }
 
     .warmup-container {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       text-align: center;
     }
 
@@ -88,8 +93,8 @@
       color: #ffffff;
       border: 1px solid #444;
       border-radius: 6px;
-      padding: 10px;
-      font-size: 1.1rem;
+      padding: 8px 10px;
+      font-size: 1rem;
       text-align: center;
       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
@@ -100,11 +105,10 @@
       background-color: #282828;
     }
 
-    /* Generic Table Styling */
+    /* Table Layout & Styling */
     .table-wrapper {
       width: 100%;
-      overflow-x: auto;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     table {
@@ -118,7 +122,7 @@
 
     th, td {
       border: 1px solid #333;
-      padding: 10px 5px;
+      padding: 6px 4px;
       text-align: center;
       vertical-align: middle;
     }
@@ -126,7 +130,7 @@
     th {
       background-color: #2c2c2c;
       color: #bb86fc;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     tr:nth-child(even) {
@@ -136,19 +140,49 @@
     .section-header-row th {
       background-color: #1f1f1f;
       color: #03dac6;
+      font-size: 1rem;
+      padding: 6px;
+    }
+
+    /* Rotation Controls Cell & Buttons */
+    .rotate-controls {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding: 2px;
+    }
+
+    .rotate-btn {
+      background-color: #2c2c2c;
+      color: #03dac6;
+      border: 1px solid #444;
+      border-radius: 4px;
       font-size: 1.1rem;
-      padding: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      flex: 1;
+      height: 100%;
+      min-height: 38px;
+      padding: 0;
+      transition: background-color 0.2s ease;
+    }
+
+    .rotate-btn:hover {
+      background-color: #383838;
+      border-color: #03dac6;
     }
 
     /* Input Fields Styling */
     .name-input, .page-input {
-      width: 90%;
+      width: 95%;
       background-color: #2e2e2e;
       color: #ffffff;
-      border: 2px solid #444;
+      border: 1px solid #444;
       border-radius: 4px;
-      padding: 8px 4px;
-      font-size: 0.95rem;
+      padding: 6px 4px;
+      font-size: 0.9rem;
       text-align: center;
       transition: all 0.3s ease;
     }
@@ -185,8 +219,8 @@
     }
 
     input[type="radio"] {
-      width: 32px;
-      height: 32px;
+      width: 26px;
+      height: 26px;
       cursor: pointer;
       accent-color: #bb86fc;
       vertical-align: middle;
@@ -199,13 +233,13 @@
     }
 
     .totals-row td {
-      font-size: 1.3rem;
-      padding: 12px 5px;
+      font-size: 1.15rem;
+      padding: 8px 4px;
       line-height: 1.2;
     }
 
     .totals-label {
-      font-size: 1rem !important;
+      font-size: 0.95rem !important;
     }
   </style>
 </head>
@@ -213,44 +247,47 @@
 
   <div class="main-container">
     
-    <h1 id="rehearsal-title">Blue Band Rehearsal</h1>
+    <div>
+      <h1 id="rehearsal-title">Blue Band Rehearsal</h1>
 
-    <div class="band-toggle-container">
-      <button id="btn-blue" class="band-btn active-blue" onclick="switchBand('blue')">Blue Band</button>
-      <button id="btn-gold" class="band-btn" onclick="switchBand('gold')">Gold Band</button>
-    </div>
+      <div class="band-toggle-container">
+        <button id="btn-blue" class="band-btn active-blue" onclick="switchBand('blue')">Blue Band</button>
+        <button id="btn-gold" class="band-btn" onclick="switchBand('gold')">Gold Band</button>
+      </div>
 
-    <div class="warmup-container">
-      <div class="section-title">Warm-Up</div>
-      <input 
-        type="text" 
-        id="warmup-input" 
-        class="warmup-input" 
-        placeholder="Enter today's warm-up routine..."
-        oninput="saveWarmup()"
-      >
-    </div>
+      <div class="warmup-container">
+        <div class="section-title">Warm-Up</div>
+        <input 
+          type="text" 
+          id="warmup-input" 
+          class="warmup-input" 
+          placeholder="Enter today's warm-up routine..."
+          oninput="saveWarmup()"
+        >
+      </div>
 
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr class="section-header-row">
-            <th colspan="8">Instrument Assignments & Music Pages</th>
-          </tr>
-          <tr>
-            <th>Lead</th>
-            <th>Doubles</th>
-            <th>Lead</th>
-            <th>Xylo.</th>
-            <th>Lead</th>
-            <th>Bass</th>
-            <th>Glock.</th>
-            <th>Triples</th>
-          </tr>
-        </thead>
-        <tbody id="instrument-body">
-          </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr class="section-header-row">
+              <th colspan="9">Instrument Assignments & Music Pages</th>
+            </tr>
+            <tr>
+              <th style="width: 70px;">Shift</th>
+              <th>Lead</th>
+              <th>Doubles</th>
+              <th>Lead</th>
+              <th>Xylo.</th>
+              <th>Lead</th>
+              <th>Bass</th>
+              <th>Glock.</th>
+              <th>Triples</th>
+            </tr>
+          </thead>
+          <tbody id="instrument-body">
+            </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="table-wrapper">
@@ -260,7 +297,7 @@
             <th colspan="6">Snack Time & Attendance Tracker</th>
           </tr>
           <tr>
-            <th>Student Name</th>
+            <th style="width: 20%;">Student Name</th>
             <th>Very Berry</th>
             <th>Apple</th>
             <th>Fruit Punch</th>
@@ -303,25 +340,29 @@
 
     let currentBand = 'blue';
 
-    // Renders both the instrument page chart and snack tracker
     function renderApp() {
-      // 1. Update Title Header
       rehearsalTitle.textContent = currentBand === 'blue' ? 'Blue Band Rehearsal' : 'Gold Band Rehearsal';
-
-      // 2. Load Saved Warm-Up Text
       warmupInput.value = localStorage.getItem(`${currentBand}_warmup`) || '';
 
-      // 3. Render Instrument Assignment Section
+      // 1. Render Instrument Assignment Section with Left and Right Shift Buttons
       instrumentBody.innerHTML = '';
       
       const rowNames = document.createElement('tr');
       const rowPages = document.createElement('tr');
 
+      // Add dual rotation buttons (Left & Right)
+      rowNames.innerHTML = `
+        <td rowspan="2" style="width: 70px; padding: 2px;">
+          <div class="rotate-controls">
+            <button class="rotate-btn" onclick="rotateNames('left')" title="Shift all names left">⬅</button>
+            <button class="rotate-btn" onclick="rotateNames('right')" title="Shift all names right">➔</button>
+          </div>
+        </td>`;
+
       for (let i = 1; i <= totalStudents; i++) {
         const nameVal = localStorage.getItem(`${currentBand}_student_name_${i}`) || '';
         const pageVal = localStorage.getItem(`${currentBand}_student_page_${i}`) || '';
 
-        // Name input box synced with main student slot
         rowNames.innerHTML += `
           <td>
             <input 
@@ -334,7 +375,6 @@
             >
           </td>`;
 
-        // Page number input box
         rowPages.innerHTML += `
           <td>
             <input 
@@ -351,7 +391,7 @@
       instrumentBody.appendChild(rowNames);
       instrumentBody.appendChild(rowPages);
 
-      // 4. Render Attendance & Snack Tracker
+      // 2. Render Attendance & Snack Tracker
       trackerBody.innerHTML = '';
 
       for (let i = 1; i <= totalStudents; i++) {
@@ -391,12 +431,32 @@
       updateTotals();
     }
 
-    // Save warm-up routine per group
+    // Handles rotating names left or right
+    function rotateNames(direction) {
+      const currentNames = [];
+      for (let i = 1; i <= totalStudents; i++) {
+        currentNames.push(localStorage.getItem(`${currentBand}_student_name_${i}`) || '');
+      }
+
+      if (direction === 'right') {
+        const last = currentNames.pop();
+        currentNames.unshift(last);
+      } else if (direction === 'left') {
+        const first = currentNames.shift();
+        currentNames.push(first);
+      }
+
+      for (let i = 1; i <= totalStudents; i++) {
+        localStorage.setItem(`${currentBand}_student_name_${i}`, currentNames[i - 1]);
+      }
+
+      renderApp();
+    }
+
     function saveWarmup() {
       localStorage.setItem(`${currentBand}_warmup`, warmupInput.value);
     }
 
-    // Sync student name inputs across both tables automatically
     function syncStudentName(index, value) {
       localStorage.setItem(`${currentBand}_student_name_${index}`, value);
       
@@ -409,12 +469,10 @@
       updateRowStatus(index);
     }
 
-    // Save individual page numbers
     function savePage(index, value) {
       localStorage.setItem(`${currentBand}_student_page_${index}`, value);
     }
 
-    // Toggle radio selection on second tap
     function handleRadioClick(radio, studentIndex) {
       if (radio.dataset.wasChecked === "true") {
         radio.checked = false;
@@ -429,7 +487,6 @@
       updateTotals();
     }
 
-    // Update name input highlight status
     function updateRowStatus(index) {
       const inputSnack = document.getElementById(`student-input-${index}`);
       if (!inputSnack) return;
