@@ -18,7 +18,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 100vh; /* Enforce exact viewport height to avoid scrolling on 1080p */
+      height: 100vh; /* Fits 1080p full screen without scrolling */
       overflow: hidden;
     }
 
@@ -39,7 +39,7 @@
       font-size: 1.5rem;
     }
 
-    /* Group Toggle Buttons Styling */
+    /* Group Toggle Controls */
     .band-toggle-container {
       display: flex;
       justify-content: center;
@@ -73,7 +73,7 @@
       box-shadow: 0 0 8px rgba(255, 179, 0, 0.4);
     }
 
-    /* Section Headers & Warm-Up Container */
+    /* Section Title & Warm-Up Container */
     .section-title {
       color: #bb86fc;
       font-size: 1rem;
@@ -344,24 +344,23 @@
       rehearsalTitle.textContent = currentBand === 'blue' ? 'Blue Band Rehearsal' : 'Gold Band Rehearsal';
       warmupInput.value = localStorage.getItem(`${currentBand}_warmup`) || '';
 
-      // 1. Render Instrument Assignment Section with Left and Right Shift Buttons
+      // 1. Render Top Instrument Table (Uses independent storage keys)
       instrumentBody.innerHTML = '';
       
       const rowNames = document.createElement('tr');
       const rowPages = document.createElement('tr');
 
-      // Add dual rotation buttons (Left & Right)
       rowNames.innerHTML = `
         <td rowspan="2" style="width: 70px; padding: 2px;">
           <div class="rotate-controls">
-            <button class="rotate-btn" onclick="rotateNames('left')" title="Shift all names left">⬅</button>
-            <button class="rotate-btn" onclick="rotateNames('right')" title="Shift all names right">➔</button>
+            <button class="rotate-btn" onclick="rotateInstrumentNames('left')" title="Shift top instrument names left">⬅</button>
+            <button class="rotate-btn" onclick="rotateInstrumentNames('right')" title="Shift top instrument names right">➔</button>
           </div>
         </td>`;
 
       for (let i = 1; i <= totalStudents; i++) {
-        const nameVal = localStorage.getItem(`${currentBand}_student_name_${i}`) || '';
-        const pageVal = localStorage.getItem(`${currentBand}_student_page_${i}`) || '';
+        const nameVal = localStorage.getItem(`${currentBand}_inst_name_${i}`) || '';
+        const pageVal = localStorage.getItem(`${currentBand}_inst_page_${i}`) || '';
 
         rowNames.innerHTML += `
           <td>
@@ -371,7 +370,7 @@
               id="inst-name-${i}" 
               placeholder="Student ${i}" 
               value="${nameVal}"
-              oninput="syncStudentName(${i}, this.value)"
+              oninput="saveInstName(${i}, this.value)"
             >
           </td>`;
 
@@ -391,22 +390,22 @@
       instrumentBody.appendChild(rowNames);
       instrumentBody.appendChild(rowPages);
 
-      // 2. Render Attendance & Snack Tracker
+      // 2. Render Bottom Snack Tracker Table (Uses independent storage keys)
       trackerBody.innerHTML = '';
 
       for (let i = 1; i <= totalStudents; i++) {
         const row = document.createElement('tr');
-        const savedName = localStorage.getItem(`${currentBand}_student_name_${i}`) || '';
+        const savedSnackName = localStorage.getItem(`${currentBand}_snack_name_${i}`) || '';
 
         let rowContent = `
           <td>
             <input 
               type="text" 
               class="name-input" 
-              id="student-input-${i}"
+              id="snack-input-${i}"
               placeholder="Student ${i}" 
-              value="${savedName}"
-              oninput="syncStudentName(${i}, this.value)"
+              value="${savedSnackName}"
+              oninput="saveSnackName(${i}, this.value)"
             >
           </td>`;
 
@@ -431,11 +430,11 @@
       updateTotals();
     }
 
-    // Handles rotating names left or right
-    function rotateNames(direction) {
+    // Rotates ONLY the instrument table names
+    function rotateInstrumentNames(direction) {
       const currentNames = [];
       for (let i = 1; i <= totalStudents; i++) {
-        currentNames.push(localStorage.getItem(`${currentBand}_student_name_${i}`) || '');
+        currentNames.push(localStorage.getItem(`${currentBand}_inst_name_${i}`) || '');
       }
 
       if (direction === 'right') {
@@ -447,7 +446,7 @@
       }
 
       for (let i = 1; i <= totalStudents; i++) {
-        localStorage.setItem(`${currentBand}_student_name_${i}`, currentNames[i - 1]);
+        localStorage.setItem(`${currentBand}_inst_name_${i}`, currentNames[i - 1]);
       }
 
       renderApp();
@@ -457,20 +456,18 @@
       localStorage.setItem(`${currentBand}_warmup`, warmupInput.value);
     }
 
-    function syncStudentName(index, value) {
-      localStorage.setItem(`${currentBand}_student_name_${index}`, value);
-      
-      const inputSnack = document.getElementById(`student-input-${index}`);
-      const inputInst = document.getElementById(`inst-name-${index}`);
+    // Save functions operating on unlinked storage keys
+    function saveInstName(index, value) {
+      localStorage.setItem(`${currentBand}_inst_name_${index}`, value);
+    }
 
-      if (inputSnack && inputSnack.value !== value) inputSnack.value = value;
-      if (inputInst && inputInst.value !== value) inputInst.value = value;
-
+    function saveSnackName(index, value) {
+      localStorage.setItem(`${currentBand}_snack_name_${index}`, value);
       updateRowStatus(index);
     }
 
     function savePage(index, value) {
-      localStorage.setItem(`${currentBand}_student_page_${index}`, value);
+      localStorage.setItem(`${currentBand}_inst_page_${index}`, value);
     }
 
     function handleRadioClick(radio, studentIndex) {
@@ -488,7 +485,7 @@
     }
 
     function updateRowStatus(index) {
-      const inputSnack = document.getElementById(`student-input-${index}`);
+      const inputSnack = document.getElementById(`snack-input-${index}`);
       if (!inputSnack) return;
 
       const isTyped = inputSnack.value.trim().length > 0;
