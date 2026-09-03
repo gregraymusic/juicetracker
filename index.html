@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snack Time & Attendance Tracker</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+
+    .band-toggle-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .band-btn {
+      background-color: #2c2c2c;
+      color: #888;
+      border: 2px solid #444;
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .band-btn.active-blue {
+      background-color: #1e3a5f;
+      color: #64b5f6;
+      border-color: #2196f3;
+      box-shadow: 0 0 8px rgba(33, 150, 243, 0.4);
+    }
+
+    .band-btn.active-gold {
+      background-color: #5d4037;
+      color: #ffd54f;
+      border-color: #ffb300;
+      box-shadow: 0 0 8px rgba(255, 179, 0, 0.4);
+    }
+
+    .table-wrapper {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #1e1e1e;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 10px 5px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #2c2c2c;
+      color: #bb86fc;
+      font-size: 1rem;
+    }
+
+    tr:nth-child(even) {
+      background-color: #252525;
+    }
+
+    .name-input {
+      width: 90%;
+      background-color: #2e2e2e;
+      color: #ffffff;
+      border: 2px solid #444;
+      border-radius: 4px;
+      padding: 8px;
+      font-size: 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    /* Colored reminder state (Name entered, but no radio selection made yet) */
+    .name-input.needs-selection-blue {
+      background-color: #1a2736;
+      border-color: #2196f3;
+      color: #90caf9;
+    }
+
+    .name-input.needs-selection-gold {
+      background-color: #2d241e;
+      border-color: #ffb300;
+      color: #ffe082;
+    }
+
+    /* Neutral state (Default empty OR Selection completed) */
+    .name-input.completed {
+      background-color: #2e2e2e;
+      border-color: #444;
+      color: #ffffff;
+    }
+
+    .name-input:focus {
+      outline: none;
+      border-color: #bb86fc !important;
+      background-color: #383838 !important;
+    }
+
+    input[type="radio"] {
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      accent-color: #bb86fc;
+      vertical-align: middle;
+    }
+
+    .totals-row {
+      font-weight: bold;
+      background-color: #2c2c2c;
+      color: #03dac6;
+    }
+
+    .totals-row td {
+      font-size: 1.4rem;
+      padding: 14px 5px;
+      line-height: 1.2;
+    }
+
+    .totals-label {
+      font-size: 1.1rem !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="table-wrapper">
+    <h1>Snack & Attendance Tracker</h1>
+
+    <div class="band-toggle-container">
+      <button id="btn-blue" class="band-btn active-blue" onclick="switchBand('blue')">Blue Band</button>
+      <button id="btn-gold" class="band-btn" onclick="switchBand('gold')">Gold Band</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Very Berry</th>
+          <th>Apple</th>
+          <th>Fruit Punch</th>
+          <th>No Juice</th>
+          <th>Absent</th>
+        </tr>
+      </thead>
+      <tbody id="tracker-body">
+        </tbody>
+      <tfoot>
+        <tr class="totals-row">
+          <td class="totals-label">Total Count</td>
+          <td id="count-berry">0 Very Berry</td>
+          <td id="count-apple">0 Apple</td>
+          <td id="count-punch">0 Fruit Punch</td>
+          <td id="count-none">0 No Juice</td>
+          <td id="count-absent">0 Absent</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <script>
+    const totalStudents = 8;
+    const trackerBody = document.getElementById('tracker-body');
+    const options = ['berry', 'apple', 'punch', 'none', 'absent'];
+    
+    const optionLabels = {
+      berry: 'Very Berry',
+      apple: 'Apple',
+      punch: 'Fruit Punch',
+      none: 'No Juice',
+      absent: 'Absent'
+    };
+
+    let currentBand = 'blue';
+
+    function renderTracker() {
+      trackerBody.innerHTML = '';
+
+      for (let i = 1; i <= totalStudents; i++) {
+        const row = document.createElement('tr');
+        
+        const storageKey = `${currentBand}_student_name_${i}`;
+        const savedName = localStorage.getItem(storageKey) || '';
+
+        let rowContent = `
+          <td>
+            <input 
+              type="text" 
+              class="name-input" 
+              id="student-input-${i}"
+              placeholder="Student ${i}" 
+              value="${savedName}"
+              aria-label="Student ${i} Name"
+              oninput="handleNameInput(${i})"
+            >
+          </td>`;
+
+        options.forEach(option => {
+          rowContent += `
+            <td>
+              <input type="radio" name="student-${i}" value="${option}" onchange="handleRadioChange(${i})">
+            </td>`;
+        });
+
+        row.innerHTML = rowContent;
+        trackerBody.appendChild(row);
+
+        updateRowStatus(i);
+      }
+
+      updateTotals();
+    }
+
+    // Dynamic styling based on whether name exists AND if a selection has been picked
+    function updateRowStatus(index) {
+      const input = document.getElementById(`student-input-${index}`);
+      const isTyped = input.value.trim().length > 0;
+      const isOptionSelected = document.querySelector(`input[name="student-${index}"]:checked`) !== null;
+
+      // Highlight only if a name is present BUT no radio button is selected yet
+      if (isTyped && !isOptionSelected) {
+        input.className = `name-input needs-selection-${currentBand}`;
+      } else {
+        input.className = 'name-input completed';
+      }
+    }
+
+    function handleNameInput(index) {
+      const inputVal = document.getElementById(`student-input-${index}`).value;
+      localStorage.setItem(`${currentBand}_student_name_${index}`, inputVal);
+      updateRowStatus(index);
+    }
+
+    function handleRadioChange(index) {
+      updateRowStatus(index);
+      updateTotals();
+    }
+
+    function switchBand(band) {
+      currentBand = band;
+      
+      const btnBlue = document.getElementById('btn-blue');
+      const btnGold = document.getElementById('btn-gold');
+
+      if (band === 'blue') {
+        btnBlue.className = 'band-btn active-blue';
+        btnGold.className = 'band-btn';
+      } else {
+        btnBlue.className = 'band-btn';
+        btnGold.className = 'band-btn active-gold';
+      }
+
+      renderTracker();
+    }
+
+    function updateTotals() {
+      options.forEach(option => {
+        const selected = document.querySelectorAll(`input[value="${option}"]:checked`);
+        const count = selected.length;
+        const label = optionLabels[option];
+        
+        document.getElementById(`count-${option}`).textContent = `${count} ${label}`;
+      });
+    }
+
+    renderTracker();
+  </script>
+
+</body>
+</html>
