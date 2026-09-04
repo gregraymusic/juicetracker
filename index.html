@@ -298,7 +298,7 @@
         <table>
           <thead>
             <tr class="section-header-row">
-              <th colspan="9">Warm-Up Assignments & Method Book Pages</th>
+              <th colspan="9">Instrument Assignments & Music Pages</th>
             </tr>
             <tr>
               <th style="width: 70px;">Shift</th>
@@ -322,7 +322,7 @@
       <table>
         <thead>
           <tr class="section-header-row">
-            <th colspan="6">Juice & Attendance Tracker</th>
+            <th colspan="6">Snack Time & Attendance Tracker</th>
           </tr>
           <tr>
             <th style="width: 20%;">Student Name</th>
@@ -368,28 +368,23 @@
 
     let currentBand = 'blue';
 
-    // Live Date & Time Updater
     function updateClock() {
       const now = new Date();
-
-      // Date Format: Monday, Month Day, Year (e.g. Thu, Sep 3, 2026)
       const dateOptions = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
       document.getElementById('header-date').textContent = now.toLocaleDateString('en-US', dateOptions);
 
-      // Time Format: 00:00:00 AM/PM
       let hours = now.getHours();
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
       
       hours = hours % 12;
-      hours = hours ? hours : 12; // 0 becomes 12
+      hours = hours ? hours : 12;
       const formattedHours = String(hours).padStart(2, '0');
 
       document.getElementById('header-time').textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
     }
 
-    // Start clock ticking every second
     setInterval(updateClock, 1000);
     updateClock();
 
@@ -397,7 +392,12 @@
       rehearsalTitle.textContent = currentBand === 'blue' ? 'Blue Band Rehearsal' : 'Gold Band Rehearsal';
       warmupInput.value = localStorage.getItem(`${currentBand}_warmup`) || '';
 
-      // 1. Render Top Instrument Table
+      renderInstrumentTable();
+      renderSnackTracker();
+    }
+
+    // Only renders the instrument table
+    function renderInstrumentTable() {
       instrumentBody.innerHTML = '';
       
       const rowNames = document.createElement('tr');
@@ -442,13 +442,16 @@
 
       instrumentBody.appendChild(rowNames);
       instrumentBody.appendChild(rowPages);
+    }
 
-      // 2. Render Bottom Snack Tracker Table
+    // Only renders the snack tracker table
+    function renderSnackTracker() {
       trackerBody.innerHTML = '';
 
       for (let i = 1; i <= totalStudents; i++) {
         const row = document.createElement('tr');
         const savedSnackName = localStorage.getItem(`${currentBand}_snack_name_${i}`) || '';
+        const savedRadioChoice = localStorage.getItem(`${currentBand}_snack_choice_${i}`) || '';
 
         let rowContent = `
           <td>
@@ -463,12 +466,15 @@
           </td>`;
 
         options.forEach(option => {
+          const isChecked = savedRadioChoice === option;
           rowContent += `
             <td>
               <input 
                 type="radio" 
                 name="student-${i}" 
                 value="${option}" 
+                ${isChecked ? 'checked' : ''}
+                data-was-checked="${isChecked ? 'true' : 'false'}"
                 onclick="handleRadioClick(this, ${i})"
               >
             </td>`;
@@ -483,6 +489,7 @@
       updateTotals();
     }
 
+    // Rotates ONLY the instrument names and re-renders ONLY the instrument table
     function rotateInstrumentNames(direction) {
       const currentNames = [];
       for (let i = 1; i <= totalStudents; i++) {
@@ -501,7 +508,8 @@
         localStorage.setItem(`${currentBand}_inst_name_${i}`, currentNames[i - 1]);
       }
 
-      renderApp();
+      // Re-render ONLY instrument table so juice choices stay untouched
+      renderInstrumentTable();
     }
 
     function saveWarmup() {
@@ -525,10 +533,12 @@
       if (radio.dataset.wasChecked === "true") {
         radio.checked = false;
         radio.dataset.wasChecked = "false";
+        localStorage.removeItem(`${currentBand}_snack_choice_${studentIndex}`);
       } else {
         const radiosInRow = document.querySelectorAll(`input[name="student-${studentIndex}"]`);
         radiosInRow.forEach(r => r.dataset.wasChecked = "false");
         radio.dataset.wasChecked = "true";
+        localStorage.setItem(`${currentBand}_snack_choice_${studentIndex}`, radio.value);
       }
 
       updateRowStatus(studentIndex);
