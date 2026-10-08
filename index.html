@@ -12,7 +12,7 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 8px 12px;
+      padding: 6px 10px;
       background-color: #121212;
       color: #e0e0e0;
       display: flex;
@@ -24,7 +24,7 @@
 
     .main-container {
       width: 100%;
-      max-width: 1250px;
+      max-width: 1300px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -37,11 +37,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .header-date, .header-time {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: bold;
       color: #03dac6;
       width: 260px;
@@ -59,7 +59,7 @@
       text-align: center;
       color: #ffffff;
       margin: 0;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       flex: 1;
     }
 
@@ -68,17 +68,17 @@
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .band-btn {
       background-color: #2c2c2c;
       color: #888;
       border: 2px solid #444;
-      padding: 4px 14px;
-      font-size: 0.9rem;
+      padding: 3px 12px;
+      font-size: 0.85rem;
       font-weight: bold;
-      border-radius: 14px;
+      border-radius: 12px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -97,23 +97,23 @@
       box-shadow: 0 0 8px rgba(255, 179, 0, 0.4);
     }
 
-    /* Large Smartboard Warm-Up Container */
+    /* Ultra-Large Smartboard Warm-Up Container */
     .warmup-container {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       text-align: center;
       background-color: #1a1a24;
-      border: 2px solid #bb86fc;
-      border-radius: 10px;
-      padding: 8px 12px;
-      box-shadow: 0 4px 12px rgba(187, 134, 252, 0.15);
+      border: 3px solid #bb86fc;
+      border-radius: 12px;
+      padding: 6px 10px;
+      box-shadow: 0 4px 16px rgba(187, 134, 252, 0.25);
     }
 
     .section-title {
       color: #bb86fc;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-weight: 900;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
       text-transform: uppercase;
     }
 
@@ -121,13 +121,14 @@
       width: 100%;
       background-color: #0d0d12;
       color: #ffffff;
-      border: 2px solid #bb86fc;
-      border-radius: 6px;
+      border: 3px solid #bb86fc;
+      border-radius: 10px;
       padding: 8px 12px;
-      font-size: 2rem;
-      font-weight: bold;
+      font-size: 7rem; /* Doubled again to 7rem for maximum distance visibility */
+      font-weight: 900;
       text-align: center;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+      line-height: 1.1;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.9);
     }
 
     .warmup-input:focus {
@@ -139,7 +140,7 @@
     /* Table Layout & Styling */
     .table-wrapper {
       width: 100%;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     table {
@@ -153,7 +154,7 @@
 
     th, td {
       border: 1px solid #333;
-      padding: 4px 3px;
+      padding: 3px 2px;
       text-align: center;
       vertical-align: middle;
     }
@@ -161,7 +162,7 @@
     th {
       background-color: #2c2c2c;
       color: #bb86fc;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     tr:nth-child(even) {
@@ -171,8 +172,8 @@
     .section-header-row th {
       background-color: #1f1f1f;
       color: #03dac6;
-      font-size: 0.95rem;
-      padding: 4px 8px;
+      font-size: 0.9rem;
+      padding: 3px 6px;
     }
 
     /* Section Header with Flex Content for Reset Button */
@@ -188,8 +189,8 @@
       color: #ffffff;
       border: none;
       border-radius: 4px;
-      padding: 3px 10px;
-      font-size: 0.75rem;
+      padding: 2px 8px;
+      font-size: 0.7rem;
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.2s ease;
@@ -202,7 +203,7 @@
     /* Rotation Controls Cell & Buttons */
     .rotate-controls {
       display: flex;
-      gap: 3px;
+      gap: 2px;
       justify-content: center;
       align-items: center;
       height: 100%;
@@ -214,12 +215,12 @@
       color: #03dac6;
       border: 1px solid #444;
       border-radius: 4px;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: bold;
       cursor: pointer;
       flex: 1;
       height: 100%;
-      min-height: 32px;
+      min-height: 28px;
       padding: 0;
       transition: background-color 0.2s ease;
     }
@@ -236,8 +237,8 @@
       color: #ffffff;
       border: 1px solid #444;
       border-radius: 4px;
-      padding: 3px 4px;
-      font-size: 0.85rem;
+      padding: 2px 3px;
+      font-size: 0.8rem;
       text-align: center;
       transition: all 0.3s ease;
     }
@@ -248,19 +249,33 @@
       color: #03dac6;
     }
 
-    /* Compact Snack Inputs */
-    .snack-table th {
-      font-size: 0.8rem;
-      padding: 3px 2px;
+    /* Compact Snack Inputs and Narrowed Columns */
+    .snack-table {
+      table-layout: fixed;
     }
 
-    .snack-table td {
+    .snack-table th.option-col,
+    .snack-table td.option-col {
+      width: 12%;
+    }
+
+    .snack-table th.name-col,
+    .snack-table td.name-col {
+      width: 40%;
+    }
+
+    .snack-table th {
+      font-size: 0.75rem;
       padding: 2px;
     }
 
+    .snack-table td {
+      padding: 1px 2px;
+    }
+
     .snack-name-input {
-      padding: 2px 4px;
-      font-size: 0.8rem;
+      padding: 1px 3px;
+      font-size: 0.75rem;
     }
 
     /* Colored reminder state for snack tracker */
@@ -290,8 +305,8 @@
 
     /* Compact Radio Buttons */
     input[type="radio"] {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       cursor: pointer;
       accent-color: #bb86fc;
       vertical-align: middle;
@@ -305,13 +320,13 @@
     }
 
     .totals-row td {
-      font-size: 0.9rem;
-      padding: 3px 2px;
-      line-height: 1.1;
+      font-size: 0.8rem;
+      padding: 2px;
+      line-height: 1;
     }
 
     .totals-label {
-      font-size: 0.8rem !important;
+      font-size: 0.75rem !important;
     }
   </style>
 </head>
@@ -333,14 +348,14 @@
         <button id="btn-gold" class="band-btn" onclick="switchBand('gold')">Gold Band</button>
       </div>
 
-      <!-- Smartboard High-Visibility Warm-Up Section -->
+      <!-- Ultra-Large Smartboard Warm-Up Section -->
       <div class="warmup-container">
         <div class="section-title">Today's Warm-Up</div>
         <input 
           type="text" 
           id="warmup-input" 
           class="warmup-input" 
-          placeholder="ENTER TODAY'S WARM-UP ROUTINE..."
+          placeholder="WARM-UP ROUTINE..."
           oninput="saveWarmup()"
         >
       </div>
@@ -353,7 +368,7 @@
               <th colspan="9">Instrument Assignments & Music Pages</th>
             </tr>
             <tr>
-              <th style="width: 65px;">Shift</th>
+              <th style="width: 60px;">Shift</th>
               <th>Lead</th>
               <th>Doubles</th>
               <th>Lead</th>
@@ -371,7 +386,7 @@
       </div>
     </div>
 
-    <!-- Compact Snack & Attendance Section with Reset Button -->
+    <!-- Compact Snack & Attendance Section -->
     <div class="table-wrapper">
       <table class="snack-table">
         <thead>
@@ -384,12 +399,12 @@
             </th>
           </tr>
           <tr>
-            <th style="width: 20%;">Student Name</th>
-            <th>Very Berry</th>
-            <th>Apple</th>
-            <th>Fruit Punch</th>
-            <th>No Juice</th>
-            <th>Absent</th>
+            <th class="name-col">Student Name</th>
+            <th class="option-col">Very Berry</th>
+            <th class="option-col">Apple</th>
+            <th class="option-col">Fruit Punch</th>
+            <th class="option-col">No Juice</th>
+            <th class="option-col">Absent</th>
           </tr>
         </thead>
         <tbody id="tracker-body">
@@ -397,12 +412,12 @@
         </tbody>
         <tfoot>
           <tr class="totals-row">
-            <td class="totals-label">Total Count</td>
-            <td id="count-berry">0 Very Berry</td>
-            <td id="count-apple">0 Apple</td>
-            <td id="count-punch">0 Fruit Punch</td>
-            <td id="count-none">0 No Juice</td>
-            <td id="count-absent">0 Absent</td>
+            <td class="totals-label name-col">Total Count</td>
+            <td id="count-berry" class="option-col">0 Very Berry</td>
+            <td id="count-apple" class="option-col">0 Apple</td>
+            <td id="count-punch" class="option-col">0 Fruit Punch</td>
+            <td id="count-none" class="option-col">0 No Juice</td>
+            <td id="count-absent" class="option-col">0 Absent</td>
           </tr>
         </tfoot>
       </table>
@@ -463,7 +478,7 @@
       const rowPages = document.createElement('tr');
 
       rowNames.innerHTML = `
-        <td rowspan="2" style="width: 65px; padding: 1px;">
+        <td rowspan="2" style="width: 60px; padding: 1px;">
           <div class="rotate-controls">
             <button class="rotate-btn" onclick="rotateInstrumentNames('left')" title="Shift top instrument names left">⬅</button>
             <button class="rotate-btn" onclick="rotateInstrumentNames('right')" title="Shift top instrument names right">➔</button>
@@ -512,7 +527,7 @@
         const savedRadioChoice = localStorage.getItem(`${currentBand}_snack_choice_${i}`) || '';
 
         let rowContent = `
-          <td>
+          <td class="name-col">
             <input 
               type="text" 
               class="name-input snack-name-input" 
@@ -526,7 +541,7 @@
         options.forEach(option => {
           const isChecked = savedRadioChoice === option;
           rowContent += `
-            <td>
+            <td class="option-col">
               <input 
                 type="radio" 
                 name="student-${i}" 
@@ -568,7 +583,6 @@
       renderInstrumentTable();
     }
 
-    /* Reset button function to clear juice/attendance selections */
     function resetAttendance() {
       for (let i = 1; i <= totalStudents; i++) {
         localStorage.removeItem(`${currentBand}_snack_choice_${i}`);
